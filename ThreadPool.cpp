@@ -9,9 +9,11 @@ ThreadPool::ThreadPool(size_t size) : end(false) {
                 [this, i] {
                     while (true) {
 
-                        std::unique_lock<std::mutex> lock(this->qMutex);/
+                        std::unique_lock<std::mutex> lock(this->qMutex);
                         this->isPosible.wait(lock,
-                                             [this] { return (this->end) || !this->work.empty(); });
+                                             [this] { 
+                                                 return (this->end) || !this->work.empty(); 
+                                             });
                         if (this->end && this->work.empty()) {
                             return;
                         }
